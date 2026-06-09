@@ -57,60 +57,95 @@ def search_jobs(keyword="Cloud Engineer", limit=20):
 
     try:
 
-    response = requests.get(
-        url,
-        params={"search": keyword},
-        timeout=20
-    )
+        logger.info(f"Searching jobs for keyword: {keyword}")
 
-    response.raise_for_status()
+        response = requests.get(
+            url,
+            params={"search": keyword},
+            timeout=20
+        )
 
-    data = response.json()
+        response.raise_for_status()
 
-    jobs = []
+        data = response.json()
 
-    TARGET_ROLES = [
-        "cloud",
-        "devops",
-        "aws",
-        "linux",
-        "platform",
-        "site reliability",
-        "sre"
-    ]
+        jobs = []
 
-    for job in data.get("jobs", []):
+        TARGET_ROLES = [
+            "cloud",
+            "devops",
+            "aws",
+            "linux",
+            "platform",
+            "site reliability",
+            "sre",
+            "infrastructure",
+            "systems engineer"
+        ]
 
-        role = job.get("title", "").lower()
+        for job in data.get("jobs", []):
 
-        if not any(
-            keyword in role
-            for keyword in TARGET_ROLES
-        ):
-            continue
+            role = job.get(
+                "title",
+                ""
+            ).lower()
 
-        jobs.append({
-            "company": job.get("company_name", ""),
-            "role": job.get("title", ""),
-            "skills": extract_skills(
-                job.get("description", "")
-            ),
-            "location": job.get(
-                "candidate_required_location",
-                "Remote"
-            ),
-            "platform": "Remotive",
-            "link": job.get("url", "")
-        })
+            if not any(
+                target in role
+                for target in TARGET_ROLES
+            ):
+                continue
 
-    return jobs
+            jobs.append({
+                "company": job.get(
+                    "company_name",
+                    ""
+                ),
+                "role": job.get(
+                    "title",
+                    ""
+                ),
+                "skills": extract_skills(
+                    job.get(
+                        "description",
+                        ""
+                    )
+                ),
+                "location": job.get(
+                    "candidate_required_location",
+                    "Remote"
+                ),
+                "platform": "Remotive",
+                "link": job.get(
+                    "url",
+                    ""
+                )
+            })
 
-except Exception as e:
-    logger.error(f"Job search failed: {e}")
-    return []
+            if len(jobs) >= limit:
+                break
+
+        logger.info(
+            f"{len(jobs)} jobs fetched for keyword '{keyword}'"
+        )
+
+        return jobs
+
+    except Exception as e:
+
+        logger.error(
+            f"Job search failed: {e}"
+        )
+
+        return []
+
+
 # ---------------- MULTI KEYWORD SEARCH ----------------
 
-def search_multiple_keywords(keywords, limit_per_keyword=10):
+def search_multiple_keywords(
+    keywords,
+    limit_per_keyword=10
+):
 
     all_jobs = []
 
@@ -131,6 +166,7 @@ def search_multiple_keywords(keywords, limit_per_keyword=10):
 def remove_duplicates(jobs):
 
     seen = set()
+
     unique_jobs = []
 
     for job in jobs:
@@ -141,7 +177,9 @@ def remove_duplicates(jobs):
         )
 
         if key not in seen:
+
             seen.add(key)
+
             unique_jobs.append(job)
 
     return unique_jobs
@@ -155,7 +193,7 @@ if __name__ == "__main__":
         "cloud",
         "devops",
         "aws",
-        "python"
+        "linux"
     ]
 
     jobs = search_multiple_keywords(
