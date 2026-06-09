@@ -17,7 +17,14 @@ def main():
     # Load keywords
     config = load_keywords()
 
-    job_titles = config.get("job_titles", [])
+    job_titles = [
+        "cloud",
+        "devops",
+        "aws",
+        "linux",
+        "platform engineer",
+        "site reliability"
+     ]
 
     if not job_titles:
         print("No job titles found in keywords.yaml")
