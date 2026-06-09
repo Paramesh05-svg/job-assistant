@@ -1,28 +1,155 @@
-candidate:
-  name: Parameshwari V
-  experience: 1
+# =====================================================
+# JOB ASSISTANT V2 CONFIGURATION
+# =====================================================
 
-locations:
-  - Bengaluru
-  - Chennai
-  - Coimbatore
-  - Hyderabad
-  - Remote
+application:
+  name: "Job Assistant V2"
+  version: "2.0.0"
 
-job_preferences:
-  remote: true
-  hybrid: true
-  onsite: true
+# =====================================================
+# RESUME SETTINGS
+# =====================================================
 
-roles:
-  - AWS Cloud Engineer
-  - Cloud Support Engineer
-  - Junior DevOps Engineer
-  - DevOps Engineer
-  - Linux Administrator
-  - System Administrator
-  - Network Engineer
+resume:
+  path: "resume/Parameshwari_New.pdf"
 
-approval_required: true
+# =====================================================
+# DATABASE SETTINGS
+# =====================================================
 
-excel_tracker: data/applied_jobs.xlsx
+database:
+  type: "sqlite"
+  path: "data/jobs.db"
+
+# =====================================================
+# EXCEL EXPORT SETTINGS
+# =====================================================
+
+excel:
+  enabled: true
+  path: "data/jobs.xlsx"
+
+# =====================================================
+# LOGGING SETTINGS
+# =====================================================
+
+logging:
+  enabled: true
+  level: "INFO"
+  path: "logs/app.log"
+
+# =====================================================
+# ATS SETTINGS
+# =====================================================
+
+ats:
+  minimum_score: 30
+  save_below_threshold: false
+
+# =====================================================
+# JOB FILTER SETTINGS
+# =====================================================
+
+filters:
+
+  roles:
+    - "Cloud Engineer"
+    - "DevOps Engineer"
+    - "AWS Engineer"
+    - "AWS DevOps Engineer"
+    - "Linux Administrator"
+    - "Platform Engineer"
+    - "Site Reliability Engineer"
+    - "Infrastructure Engineer"
+    - "Cloud Support Engineer"
+
+  locations:
+    - "Chennai"
+    - "Bengaluru"
+    - "Hyderabad"
+    - "Coimbatore"
+    - "Remote"
+
+  experience:
+    min_years: 0
+    max_years: 2
+
+# =====================================================
+# APPROVAL SETTINGS
+# =====================================================
+
+approval:
+
+  enabled: true
+
+  default_status: "PENDING"
+
+  allow_open_job_link: true
+
+# =====================================================
+# JOB SOURCE SETTINGS
+# =====================================================
+
+job_sources:
+
+  remotive:
+    enabled: true
+    limit: 50
+
+  greenhouse:
+    enabled: true
+    limit: 50
+
+  lever:
+    enabled: true
+    limit: 50
+
+# =====================================================
+# DUPLICATE DETECTION
+# =====================================================
+
+duplicates:
+
+  enabled: true
+
+  compare_fields:
+    - company
+    - role
+
+# =====================================================
+# STARTUP SETTINGS
+# =====================================================
+
+startup:
+
+  run_on_windows_login: false
+
+  ask_for_confirmation: true
+
+# =====================================================
+# EXPORT SETTINGS
+# =====================================================
+
+export:
+
+  include_skills: true
+
+  include_ats_score: true
+
+  include_job_link: true
+
+  include_platform: true
+
+# =====================================================
+# FUTURE FEATURES
+# =====================================================
+
+future:
+
+  email_notifications: True
+
+  dashboard_enabled: false
+
+  ai_resume_optimizer: false
+
+  auto_resume_customization: false
