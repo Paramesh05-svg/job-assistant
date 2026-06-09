@@ -9,6 +9,11 @@ locations:
   - Hyderabad
   - Remote
 
+job_preferences:
+  remote: true
+  hybrid: true
+  onsite: true
+
 roles:
   - AWS Cloud Engineer
   - Cloud Support Engineer
