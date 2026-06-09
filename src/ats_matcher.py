@@ -1,52 +1,22 @@
 def calculate_match(candidate_skills, job_skills):
 
-    candidate_skills = {
+    candidate_set = {
         skill.lower().strip()
         for skill in candidate_skills
     }
 
-    job_skills = {
+    job_set = {
         skill.lower().strip()
         for skill in job_skills
     }
 
-    if not job_skills:
+    if not job_set:
         return 0, []
 
-    matched = candidate_skills.intersection(job_skills)
+    matched = candidate_set.intersection(job_set)
 
-    # Percentage of job requirements matched
     score = round(
-        (len(matched) / len(job_skills)) * 100
+        (len(matched) / len(job_set)) * 100
     )
 
-    matched_skills = sorted(
-        list(matched)
-    )
-
-    return score, matched_skills
-
-
-if __name__ == "__main__":
-
-    candidate = [
-        "AWS",
-        "Linux",
-        "Terraform",
-        "Python"
-    ]
-
-    job = [
-        "AWS",
-        "Linux",
-        "Docker",
-        "Terraform"
-    ]
-
-    score, matched = calculate_match(
-        candidate,
-        job
-    )
-
-    print(f"Score: {score}%")
-    print(f"Matched: {matched}")
+    return score, sorted(list(matched))
