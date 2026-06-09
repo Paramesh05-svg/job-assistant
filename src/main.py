@@ -2,18 +2,19 @@ from datetime import datetime
 
 from src.resume_parser import parse_resume
 from src.utils.config_loader import load_keywords
-from src.job_search_engine import search_jobs
+from src.job_search_engine import search_multiple_keywords
 from src.ats_matcher import calculate_match
 from src.excel_tracker import initialize_tracker, add_job
 
 
 def main():
+
     print("\n===== JOB ASSISTANT STARTED =====\n")
 
-    # Initialize Excel tracker
+    # Initialize tracker
     initialize_tracker()
 
-    # Load keywords from YAML
+    # Load keywords
     config = load_keywords()
 
     job_titles = config.get("job_titles", [])
@@ -22,27 +23,30 @@ def main():
         print("No job titles found in keywords.yaml")
         return
 
-    # Parse resume
-    profile = parse_resume("resume/Parameshwari_New.pdf")
+    print("Keywords Loaded:")
+    for title in job_titles:
+        print(f"  - {title}")
 
-    candidate_skills = profile.get("skills", [])
+    print()
+
+    # Parse resume
+    profile = parse_resume(
+        "resume/Parameshwari_New.pdf"
+    )
+
+    candidate_skills = profile.get(
+        "skills",
+        []
+    )
 
     print("Resume Parsed Successfully")
     print(f"Skills Found: {candidate_skills}\n")
 
-    all_jobs = []
-
-    # Search jobs
-    for title in job_titles:
-        print(f"Searching jobs for: {title}")
-
-        jobs = search_jobs(
-            keyword=title,
-            limit=10
-        )
-
-        if jobs:
-            all_jobs.extend(jobs)
+    # Search jobs from all keywords
+    all_jobs = search_multiple_keywords(
+        keywords=job_titles,
+        limit_per_keyword=10
+    )
 
     if not all_jobs:
         print("No jobs found.")
@@ -50,21 +54,29 @@ def main():
 
     print(f"\nFound {len(all_jobs)} jobs.\n")
 
+    jobs_saved = 0
+
     # Process jobs
     for job in all_jobs:
 
-        job_skills = job.get("skills", [])
+        job_skills = job.get(
+            "skills",
+            []
+        )
 
         score, matched = calculate_match(
             candidate_skills,
             job_skills
         )
 
-        print(f"Company : {job['company']}")
-        print(f"Role    : {job['role']}")
-        print(f"ATS Match : {score}%")
-        print(f"Matched Skills : {matched}")
-        print("-" * 50)
+        print("=" * 70)
+        print(f"Company       : {job['company']}")
+        print(f"Role          : {job['role']}")
+        print(f"Location      : {job.get('location', '')}")
+        print(f"Platform      : {job.get('platform', '')}")
+        print(f"ATS Match     : {score}%")
+        print(f"Matched Skills: {matched}")
+        print("=" * 70)
 
         add_job({
             "Company Name": job["company"],
@@ -81,7 +93,9 @@ def main():
             "Notes": ""
         })
 
-    print("\nJob data saved successfully.")
+        jobs_saved += 1
+
+    print(f"\n{jobs_saved} jobs saved successfully.")
     print("\n===== JOB ASSISTANT COMPLETED =====")
 
 
