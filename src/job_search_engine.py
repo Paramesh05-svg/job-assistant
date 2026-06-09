@@ -89,7 +89,7 @@ def search_jobs(keyword="Cloud Engineer", limit=20):
                 "title",
                 ""
             ).lower()
-
+            print(job.get("title", ""))
          #   if not any(
           #      target in role
            #     for target in TARGET_ROLES
