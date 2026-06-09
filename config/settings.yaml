@@ -1,0 +1,23 @@
+candidate:
+  name: Parameshwari V
+  experience: 1
+
+locations:
+  - Bengaluru
+  - Chennai
+  - Coimbatore
+  - Hyderabad
+  - Remote
+
+roles:
+  - AWS Cloud Engineer
+  - Cloud Support Engineer
+  - Junior DevOps Engineer
+  - DevOps Engineer
+  - Linux Administrator
+  - System Administrator
+  - Network Engineer
+
+approval_required: true
+
+excel_tracker: data/applied_jobs.xlsx
