@@ -1,0 +1,10 @@
+streamlit
+pandas
+openpyxl
+pdfplumber
+pyyaml
+sqlite-utils
+playwright
+beautifulsoup4
+requests
+scikit-learn
