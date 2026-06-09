@@ -1,0 +1,35 @@
+roles:
+  - AWS Cloud Engineer
+  - Cloud Engineer
+  - Cloud Support Engineer
+  - Junior DevOps Engineer
+  - DevOps Engineer
+  - Linux Administrator
+  - System Administrator
+  - Network Engineer
+  - Site Reliability Engineer
+  - Platform Engineer
+
+skills:
+  - AWS
+  - Terraform
+  - Docker
+  - Kubernetes
+  - Jenkins
+  - GitLab
+  - Linux
+  - Python
+  - Shell Scripting
+  - Networking
+  - Ansible
+
+locations:
+  - Bengaluru
+  - Chennai
+  - Coimbatore
+  - Hyderabad
+  - Remote
+
+experience:
+  min: 0
+  max: 2
