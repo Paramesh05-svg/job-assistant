@@ -32,7 +32,7 @@ logger = get_logger(__name__)
 
 RESUME_PATH = "resume/Parameshwari_New.pdf"
 
-MINIMUM_ATS_SCORE = 30
+MINIMUM_ATS_SCORE = 0
 
 
 # ==================================================
@@ -126,11 +126,11 @@ def main():
             )
         )
 
-        if not is_eligible(
-            score,
-            MINIMUM_ATS_SCORE
-        ):
-            continue
+  #      if not is_eligible(
+#         score,
+   #         MINIMUM_ATS_SCORE
+    #    ):
+     #       continue
 
         print("=" * 70)
 
