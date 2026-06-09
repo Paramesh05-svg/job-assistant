@@ -57,77 +57,57 @@ def search_jobs(keyword="Cloud Engineer", limit=20):
 
     try:
 
-        logger.info(f"Searching jobs for keyword: {keyword}")
+    response = requests.get(
+        url,
+        params={"search": keyword},
+        timeout=20
+    )
 
-        response = requests.get(
-            url,
-            params={"search": keyword},
-            timeout=20
-        )
+    response.raise_for_status()
 
-        response.raise_for_status()
+    data = response.json()
 
-        data = response.json()
+    jobs = []
 
-        jobs = []
+    TARGET_ROLES = [
+        "cloud",
+        "devops",
+        "aws",
+        "linux",
+        "platform",
+        "site reliability",
+        "sre"
+    ]
 
-TARGET_ROLES = [
-    "cloud",
-    "devops",
-    "aws",
-    "linux",
-    "platform",
-    "site reliability",
-    "sre",
-    "infrastructure",
-    "systems engineer"
-]
+    for job in data.get("jobs", []):
 
-for job in data.get("jobs", []):
+        role = job.get("title", "").lower()
 
-    role = job.get("title", "").lower()
+        if not any(
+            keyword in role
+            for keyword in TARGET_ROLES
+        ):
+            continue
 
-    if not any(
-        keyword in role
-        for keyword in TARGET_ROLES
-    ):
-        continue
-            description = job.get("description", "")
+        jobs.append({
+            "company": job.get("company_name", ""),
+            "role": job.get("title", ""),
+            "skills": extract_skills(
+                job.get("description", "")
+            ),
+            "location": job.get(
+                "candidate_required_location",
+                "Remote"
+            ),
+            "platform": "Remotive",
+            "link": job.get("url", "")
+        })
 
-            jobs.append({
-                "company": job.get("company_name", ""),
-                "role": job.get("title", ""),
-                "skills": extract_skills(description),
-                "location": job.get(
-                    "candidate_required_location",
-                    "Remote"
-                ),
-                "platform": "Remotive",
-                "link": job.get("url", "")
-            })
+    return jobs
 
-            if len(jobs) >= limit:
-                break
-
-        logger.info(
-            f"{len(jobs)} jobs fetched for keyword '{keyword}'"
-        )
-
-        return jobs
-
-    except requests.exceptions.Timeout:
-        logger.error("Request timed out")
-        return []
-
-    except requests.exceptions.RequestException as e:
-        logger.error(f"Request failed: {e}")
-        return []
-
-    except Exception as e:
-        logger.error(f"Unexpected error: {e}")
-        return []
-
-
+except Exception as e:
+    logger.error(f"Job search failed: {e}")
+    return []
 # ---------------- MULTI KEYWORD SEARCH ----------------
 
 def search_multiple_keywords(keywords, limit_per_keyword=10):
