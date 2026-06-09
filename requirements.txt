@@ -4,7 +4,8 @@ openpyxl
 pdfplumber
 pyyaml
 sqlite-utils
-playwright
-beautifulsoup4
 requests
-scikit-learn
+beautifulsoup4
+playwright
+pystray
+Pillow
