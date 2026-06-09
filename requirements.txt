@@ -1,11 +1,40 @@
-streamlit
-pandas
-openpyxl
-pdfplumber
-pyyaml
-sqlite-utils
-requests
-beautifulsoup4
-playwright
-pystray
-Pillow
+# HTTP Requests
+requests==2.32.4
+
+# Data Processing
+pandas==2.3.1
+numpy==2.3.2
+
+# Excel Export
+openpyxl==3.1.5
+
+# YAML Configuration
+PyYAML==6.0.2
+
+# PDF Resume Parsing
+pdfplumber==0.11.7
+pdfminer.six==20250506
+
+# SQLite (built into Python)
+# No installation required
+
+# Logging (built into Python)
+# No installation required
+
+# Date Handling
+python-dateutil==2.9.0.post0
+
+# Progress Bars
+tqdm==4.67.1
+
+# Environment Variables
+python-dotenv==1.1.1
+
+# Data Validation
+pydantic==2.11.7
+
+# Optional Future Dashboard
+streamlit==1.48.0
+
+# Optional Pretty Tables
+tabulate==0.9.0
