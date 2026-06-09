@@ -6,36 +6,79 @@ import requests
 logger = get_logger(__name__)
 
 GREENHOUSE_BOARDS = [
-    "hashicorp",
     "datadog",
     "cloudflare",
     "newrelic",
     "elastic",
     "stripe",
-    "mongodb",
+    "mongodb"
 ]
+
+TARGET_KEYWORDS = [
+    "cloud",
+    "devops",
+    "aws",
+    "linux",
+    "site reliability",
+    "sre",
+    "platform",
+    "infrastructure",
+    "systems engineer"
+]
+
+HEADERS = {
+    "User-Agent": (
+        "Mozilla/5.0 "
+        "(Windows NT 10.0; Win64; x64)"
+    )
+}
+
+
+def is_relevant_role(role):
+
+    role = role.lower()
+
+    return any(
+        keyword in role
+        for keyword in TARGET_KEYWORDS
+    )
 
 
 def fetch_jobs():
+
     jobs = []
 
     for board in GREENHOUSE_BOARDS:
+
         try:
+
             url = (
-                f"https://boards-api.greenhouse.io/v1/boards/"
+                "https://boards-api.greenhouse.io/v1/boards/"
                 f"{board}/jobs"
             )
 
             response = requests.get(
                 url,
-                timeout=20,
+                headers=HEADERS,
+                timeout=20
             )
 
             response.raise_for_status()
 
             data = response.json()
 
+            board_jobs = 0
+
             for job in data.get("jobs", []):
+
+                role = job.get(
+                    "title",
+                    ""
+                )
+
+                if not is_relevant_role(role):
+                    continue
+
                 content = job.get(
                     "content",
                     ""
@@ -44,10 +87,9 @@ def fetch_jobs():
                 jobs.append(
                     {
                         "company": board.title(),
-                        "role": job.get(
-                            "title",
-                            ""
-                        ),
+
+                        "role": role,
+
                         "location": job.get(
                             "location",
                             {}
@@ -55,19 +97,30 @@ def fetch_jobs():
                             "name",
                             ""
                         ),
+
                         "platform": "Greenhouse",
+
                         "job_link": job.get(
                             "absolute_url",
                             ""
                         ),
+
                         "description": content,
+
                         "skills": extract_skills(
                             content
                         ),
                     }
                 )
 
+                board_jobs += 1
+
+            logger.info(
+                f"{board}: {board_jobs} relevant jobs"
+            )
+
         except Exception as error:
+
             logger.error(
                 f"Greenhouse error "
                 f"{board}: {error}"
@@ -75,7 +128,25 @@ def fetch_jobs():
 
     logger.info(
         f"Greenhouse fetched "
-        f"{len(jobs)} jobs"
+        f"{len(jobs)} relevant jobs"
     )
 
     return jobs
+
+
+if __name__ == "__main__":
+
+    jobs = fetch_jobs()
+
+    print(
+        f"\nTotal Greenhouse Jobs: "
+        f"{len(jobs)}\n"
+    )
+
+    for job in jobs[:10]:
+
+        print(
+            f"{job['company']} | "
+            f"{job['role']} | "
+            f"{job['location']}"
+        )
