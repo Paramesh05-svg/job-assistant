@@ -5,7 +5,6 @@ keyword="Cloud Engineer",
 limit=20
 ):
 
-```
 url = "https://remotive.com/api/remote-jobs"
 
 try:
@@ -59,7 +58,6 @@ except Exception as e:
     )
 
     return []
-```
 
 if **name** == "**main**":
 
@@ -77,4 +75,3 @@ for job in jobs[:5]:
     print(
         f"{job['company']} | {job['role']}"
     )
-```
