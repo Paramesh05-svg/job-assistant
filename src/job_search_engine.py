@@ -71,8 +71,27 @@ def search_jobs(keyword="Cloud Engineer", limit=20):
 
         jobs = []
 
-        for job in data.get("jobs", []):
+TARGET_ROLES = [
+    "cloud",
+    "devops",
+    "aws",
+    "linux",
+    "platform",
+    "site reliability",
+    "sre",
+    "infrastructure",
+    "systems engineer"
+]
 
+for job in data.get("jobs", []):
+
+    role = job.get("title", "").lower()
+
+    if not any(
+        keyword in role
+        for keyword in TARGET_ROLES
+    ):
+        continue
             description = job.get("description", "")
 
             jobs.append({
