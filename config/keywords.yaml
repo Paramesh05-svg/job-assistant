@@ -1,10 +1,11 @@
 job_titles:
-  - cloud
-  - devops
-  - aws
-  - python
-  - linux
-  - platform engineer
+  - Cloud Engineer
+  - DevOps Engineer
+  - AWS DevOps Engineer
+  - Linux Administrator
+  - Site Reliability Engineer
+  - Platform Engineer
+  - Cloud Support Engineer
 
 skills:
   - AWS
