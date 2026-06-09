@@ -4,15 +4,59 @@ from src.utils.logger import get_logger
 
 logger = get_logger(__name__)
 
-REMOTIVE_API = "https://remotive.com/api/remote-jobs"
+REMOTIVE_API_URL = "https://remotive.com/api/remote-jobs"
+
+COMMON_SKILLS = [
+    "AWS",
+    "Terraform",
+    "Docker",
+    "Kubernetes",
+    "Linux",
+    "Python",
+    "Jenkins",
+    "GitLab",
+    "Ansible",
+    "Shell",
+    "CloudWatch",
+    "Networking",
+    "DevOps",
+    "CI/CD",
+    "Git",
+    "EC2",
+    "S3",
+    "IAM",
+    "VPC",
+    "RDS",
+    "Load Balancer",
+    "Auto Scaling"
+]
+
+
+def extract_skills(text):
+
+    if not text:
+        return []
+
+    text = text.lower()
+
+    found_skills = []
+
+    for skill in COMMON_SKILLS:
+
+        if skill.lower() in text:
+            found_skills.append(skill)
+
+    return list(set(found_skills))
 
 
 def fetch_jobs(limit=100):
 
+    jobs = []
+
     try:
 
         response = requests.get(
-            REMOTIVE_API,
+            REMOTIVE_API_URL,
             timeout=30
         )
 
@@ -20,9 +64,12 @@ def fetch_jobs(limit=100):
 
         data = response.json()
 
-        jobs = []
-
         for job in data.get("jobs", []):
+
+            description = job.get(
+                "description",
+                ""
+            )
 
             jobs.append({
 
@@ -41,7 +88,7 @@ def fetch_jobs(limit=100):
                 "location":
                     job.get(
                         "candidate_required_location",
-                        ""
+                        "Remote"
                     ),
 
                 "platform":
@@ -54,12 +101,12 @@ def fetch_jobs(limit=100):
                     ),
 
                 "description":
-                    job.get(
-                        "description",
-                        ""
-                    ),
+                    description,
 
-                "skills": []
+                "skills":
+                    extract_skills(
+                        description
+                    )
             })
 
         logger.info(
@@ -71,7 +118,7 @@ def fetch_jobs(limit=100):
     except Exception as error:
 
         logger.error(
-            f"Remotive error: {error}"
+            f"Remotive fetch failed: {error}"
         )
 
         return []
