@@ -90,11 +90,11 @@ def search_jobs(keyword="Cloud Engineer", limit=20):
                 ""
             ).lower()
 
-            if not any(
-                target in role
-                for target in TARGET_ROLES
-            ):
-                continue
+         #   if not any(
+          #      target in role
+           #     for target in TARGET_ROLES
+           # ):
+             #   continue
 
             jobs.append({
                 "company": job.get(
