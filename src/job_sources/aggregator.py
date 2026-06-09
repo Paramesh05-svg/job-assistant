@@ -6,23 +6,17 @@ from src.job_sources.greenhouse_source import (
     fetch_jobs as greenhouse_jobs
 )
 
-from src.job_sources.lever_source import (
-    fetch_jobs as lever_jobs
-)
-
 
 def remove_duplicates(jobs):
 
     seen = set()
 
-    unique = []
+    unique_jobs = []
 
     for job in jobs:
 
         key = (
-
             job["company"].lower(),
-
             job["role"].lower()
         )
 
@@ -30,9 +24,9 @@ def remove_duplicates(jobs):
 
             seen.add(key)
 
-            unique.append(job)
+            unique_jobs.append(job)
 
-    return unique
+    return unique_jobs
 
 
 def fetch_all_jobs():
@@ -45,10 +39,6 @@ def fetch_all_jobs():
 
     jobs.extend(
         greenhouse_jobs()
-    )
-
-    jobs.extend(
-        lever_jobs()
     )
 
     return remove_duplicates(
