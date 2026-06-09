@@ -1,7 +1,0 @@
-__pycache__/
-*.pyc
-
-data/jobs.db
-data/applied_jobs.xlsx
-
-.env
